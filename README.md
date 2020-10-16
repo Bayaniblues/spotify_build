@@ -10,4 +10,7 @@ is where the model is visualized
 fastapi server
 
 ### graphs.py 
-higher order functions 
+higher order functions
+
+### templates
+jinja files
