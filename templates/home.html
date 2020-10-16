@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="chart" id="bargraph">
+        <script>
+            var graphs = {{plot | safe}};
+            Plotly.plot('bargraph',graphs,{});
+        </script>
+    </div>
+
+    <h3>Bootstrap Slider Example</h3>
+    <p>
+    <input type="text"
+           onchange="RGBChange()"
+           class="span2"
+           value=""
+           data-slider-min="0"
+           data-slider-max="1"
+           data-slider-step="0.001"
+           data-slider-value="1"
+           data-slider-id="GC"
+           id="G"
+           data-slider-tooltip="hide"
+           data-slider-handle="round" />
+    </p>
+
+    <input id="val" type="text">
+
+    <script>
+    var RGBChange = function() {
+        $("#val").val(g.getValue());
+    };
+
+    var g = $('#G').slider()
+            .on('slide', RGBChange)
+            .data('slider');
+    </script>
+
+{% endblock %}
