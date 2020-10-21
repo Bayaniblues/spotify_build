@@ -83,3 +83,4 @@ webencodings==0.5.1
 python-dotenv==0.14.0
 psycopg2
 spotipy
+psutil

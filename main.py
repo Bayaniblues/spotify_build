@@ -12,6 +12,9 @@ from fastapi.templating import Jinja2Templates
 import pickle
 import pandas as pd
 
+import psutil
+
+
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -45,7 +48,9 @@ def run_model(track_id: str):
     """
     filename = 'test_1.sav'
     model = pickle.load(open(filename, 'rb'))
-    return KNN(model, track_id)
+    output = KNN(model, track_id)
+    print(psutil.virtual_memory().percent)
+    return output
 
 
 @app.get("/api/v1/search/byfeature/{acousticness}/{danceability}/{duration_ms}/{energy}/{instrumentalness}/{liveness}/{loudness}/{speechiness}/{valence}/{tempo}")
@@ -75,11 +80,9 @@ def search_by_feature(acousticness,danceability,duration_ms,energy,instrumentaln
         infile.close()
 
         output = model.kneighbors([feature_array])
-
         df = pd.read_csv('notebooks/spotify_kaggle/spotify3.csv')
-
         track_id = df.values.tolist()[0][-1]
-
+        print(psutil.virtual_memory().percent)
         return output
 
     def iterate_this(in_put):
