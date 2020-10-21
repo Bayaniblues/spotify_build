@@ -75,10 +75,10 @@ def get_track_id(input_value):
                                            client_secret=secret_id)
     sp = spotipy.Spotify(client_credentials_manager=credentials)
 
-    test1 = sp.track(input_value)
+    test1 = sp.tracks(input_value)
 
     return test1
 
 
 if __name__ == "__main__":
-    track_id("Beatles", "Stawberryfeilds")
+    print(get_track_id(['6KbQ3uYMLKb5jDxLF7wYDD', '6KuQTIu1KoTTkLXKrwlLPV']))

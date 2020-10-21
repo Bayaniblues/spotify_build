@@ -6,8 +6,8 @@ import numpy as np
 import json
 import pickle
 
-import plotly.graph_objects as go
 import plotly.offline as pyo
+
 
 def create_plot():
 
