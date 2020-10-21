@@ -81,4 +81,5 @@ uvicorn==0.12.1
 wcwidth==0.2.5
 webencodings==0.5.1
 python-dotenv==0.14.0
+psycopg2
 spotipy
