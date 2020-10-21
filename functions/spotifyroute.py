@@ -66,5 +66,19 @@ def get_stuff(input_value):
 
     return test1
 
+
+def get_track_id(input_value):
+    client_id = os.getenv("CLIENT_ID")
+    secret_id = os.getenv("SECRET_ID")
+
+    credentials = SpotifyClientCredentials(client_id=client_id,
+                                           client_secret=secret_id)
+    sp = spotipy.Spotify(client_credentials_manager=credentials)
+
+    test1 = sp.track(input_value)
+
+    return test1
+
+
 if __name__ == "__main__":
     track_id("Beatles", "Stawberryfeilds")

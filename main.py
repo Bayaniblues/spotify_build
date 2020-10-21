@@ -2,7 +2,7 @@ from typing import Optional
 
 # Local imports
 from functions.graphs import create_plot, search_id
-from functions.spotifyroute import track_id, get_stuff
+from functions.spotifyroute import track_id, get_stuff,get_track_id
 
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
@@ -12,9 +12,7 @@ from fastapi.templating import Jinja2Templates
 import pickle
 import pandas as pd
 
-
 app = FastAPI()
-
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -67,23 +65,38 @@ def search_by_feature(acousticness,danceability,duration_ms,energy,instrumentaln
     :return:
     """
     feature_array = [acousticness,danceability,duration_ms,energy,instrumentalness,liveness,loudness,speechiness,valence,tempo]
-    filename = 'neighbors,pickle'
 
-    infile = open(filename, 'rb')
-    model = pickle.load(infile)
-    infile.close()
+    def idk(inpute):
+        feature_array = inpute
+        filename = 'notebooks/neighbors.pickle'
 
-    output = model.kneighbors([feature_array])
+        infile = open(filename, 'rb')
+        model = pickle.load(infile)
+        infile.close()
 
-    df = pd.read_csv('notebooks/spotify_kaggle/spotify3.csv')
+        output = model.kneighbors([feature_array])
 
-    return output
+        df = pd.read_csv('notebooks/spotify_kaggle/spotify3.csv')
+
+        track_id = df.values.tolist()[0][-1]
+
+        return output
+
+    def iterate_this(in_put):
+        df = pd.read_csv('notebooks/spotify_kaggle/spotify3.csv')
+        state = []
+        for i, x in enumerate(in_put[1][0]):
+            track_id = df.values.tolist()[x][-1]
+            state.append(track_id)
+        return state
+
+    return iterate_this(idk(feature_array))
 
 
 @app.get('/api/v1/spotify/artist/{artist}/track/{track}')
 def api_artist_track(artist, track):
     """
-    Connects to the Spotify api and search via Artist & track
+    API Router: Connects to the Spotify api and search via Artist & track
     to return data features.
     :param artist:
     :param track:
@@ -94,6 +107,16 @@ def api_artist_track(artist, track):
     except:
         return {"error": "error, did you enter the correct artist/track pair?"}
 
+
+@app.get('/api/v1/spotify/track_id/{track_id}')
+def api_query_track_id(track_id):
+    """
+    API Router: Connects to the Spotify api Inputs track_id parameter and queries an track_id and returns
+    everything from that track id.
+    :param artist:
+    :return:
+    """
+    return {"Track Suggestions": get_track_id(track_id)}
 
 
 @app.get('/api/v1/sql/artist/{artist}')
