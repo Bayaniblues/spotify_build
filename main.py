@@ -21,6 +21,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
+Check_ram = lambda: print("RAM"+str(psutil.virtual_memory().percent)+"%")
+
 
 # Base function using a knn model input and a track id
 def KNN(model, track_id):
@@ -49,7 +51,7 @@ def run_model(track_id: str):
     filename = 'test_1.sav'
     model = pickle.load(open(filename, 'rb'))
     output = KNN(model, track_id)
-    print(psutil.virtual_memory().percent)
+    Check_ram()
     return output
 
 
@@ -82,7 +84,7 @@ def search_by_feature(acousticness,danceability,duration_ms,energy,instrumentaln
         output = model.kneighbors([feature_array])
         df = pd.read_csv('notebooks/spotify_kaggle/spotify3.csv')
         track_id = df.values.tolist()[0][-1]
-        print(psutil.virtual_memory().percent)
+        Check_ram()
         return output
 
     def iterate_this(in_put):

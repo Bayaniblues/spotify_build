@@ -75,7 +75,7 @@ def get_track_id(input_value):
                                            client_secret=secret_id)
     sp = spotipy.Spotify(client_credentials_manager=credentials)
 
-    test1 = sp.tracks(input_value)
+    test1 = sp.track(input_value)
 
     return test1
 
