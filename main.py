@@ -135,6 +135,14 @@ def sql_query_artist(artist):
     return {"Artist Suggestions": get_stuff(artist)}
 
 
+@app.get('/api/v1/csv/track/{track_id}')
+def csv_search(track_id):
+    data = pd.read_csv('notebooks/spotify_kaggle/spotify3.csv')
+    search = data[data.eq(track_id).any(1)].values.tolist()
+
+    return search
+
+
 @app.get("/items/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
     bar = create_plot()
